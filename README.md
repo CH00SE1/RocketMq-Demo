@@ -1,7 +1,9 @@
-# RocketMq-Demo
+# [作者](https://github.com/CH00SE1/)  说明
+
+## RocketMq-Demo
 2022年11月13号学习rocketmq
 
-# rocketmq
+## rocketmq
 
 ### 消费者的消费模式
 
@@ -27,7 +29,7 @@
 Message Status Check主要用来解决分布式事务中的超时问题。
 ```
 
-###操作指令
+#### 操作指令
 ```text
 配置rocketmq环境变量
 
@@ -53,7 +55,7 @@ https://github.com/apache/rocketmq-dashboard
 maven 打包 mvn clean package -Dmaven.test.skip=true
 ```
 
-### rocketmq集群
+#### rocketmq集群
 ```text
 1.单master模式
 也就是一个master节点，称不上是集群。一旦宕机，整个服务不可用。
