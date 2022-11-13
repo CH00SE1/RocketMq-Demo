@@ -1,0 +1,10 @@
+# 配置rocketmq
+rocketmq:
+  # 服务地址
+  name-server: 127.0.0.1:9876
+  # 设置组
+  producer:
+    group: producer-demo-lsx1
+
+server:
+  port: 8932
