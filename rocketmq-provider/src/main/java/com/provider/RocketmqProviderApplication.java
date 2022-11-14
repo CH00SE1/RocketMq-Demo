@@ -15,7 +15,7 @@ public class RocketmqProviderApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext run = SpringApplication.run(RocketmqProviderApplication.class, args);
         ProducerService producerService = (ProducerService) run.getBean("producerService");
-        producerService.sendMessageWithTag();
+        producerService.sendAsyncMessage();
     }
 
 }

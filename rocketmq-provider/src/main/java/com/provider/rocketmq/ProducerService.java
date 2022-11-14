@@ -1,5 +1,6 @@
 package com.provider.rocketmq;
 
+import com.provider.entity.RocketmqUserInfo;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.annotation.RocketMQTransactionListener;
@@ -24,7 +25,7 @@ import java.util.UUID;
 @RocketMQTransactionListener
 public class ProducerService implements RocketMQLocalTransactionListener {
 
-    public static final int COUNT = 100;
+    public static final int COUNT = 100000;
 
     private final RocketMQTemplate rocketMQTemplate;
 
@@ -46,7 +47,16 @@ public class ProducerService implements RocketMQLocalTransactionListener {
      */
     public void sendSyncMessage() {
         for (int i = 0; i < COUNT; i++) {
-            SendResult sendResult = rocketMQTemplate.syncSend("lsx-rocketmq", "rocketmq hello seqId：" + i);
+            String uuid = UUID.randomUUID().toString();
+            RocketmqUserInfo rocketmqUserInfo = new RocketmqUserInfo();
+            rocketmqUserInfo.setId(i);
+            rocketmqUserInfo.setAddress(uuid);
+            rocketmqUserInfo.setSex(i % 2);
+            rocketmqUserInfo.setUserName("lsx - " + i);
+            rocketmqUserInfo.setNikeName("liushaoxiong - " + i);
+            rocketmqUserInfo.setPhone("https://" + uuid);
+            rocketmqUserInfo.setCity("湖南-sendSyncMessage");
+            SendResult sendResult = rocketMQTemplate.syncSend("lsx-rocketmq", rocketmqUserInfo);
         }
     }
 
@@ -55,7 +65,16 @@ public class ProducerService implements RocketMQLocalTransactionListener {
      */
     public void sendAsyncMessage() {
         for (int i = 0; i < COUNT; i++) {
-            rocketMQTemplate.asyncSend("lsx-rocketmq", "rocketmq hello seqId：" + i, new SendCallback() {
+            String uuid = UUID.randomUUID().toString();
+            RocketmqUserInfo rocketmqUserInfo = new RocketmqUserInfo();
+            rocketmqUserInfo.setId(i);
+            rocketmqUserInfo.setAddress(uuid);
+            rocketmqUserInfo.setSex(i % 2);
+            rocketmqUserInfo.setUserName("lsx - " + i);
+            rocketmqUserInfo.setNikeName("liushaoxiong - " + i);
+            rocketmqUserInfo.setPhone("https://" + uuid);
+            rocketmqUserInfo.setCity("湖南-sendAsyncMessage");
+            rocketMQTemplate.asyncSend("lsx-rocketmq", rocketmqUserInfo, new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
                     System.out.println("成功" + sendResult);
@@ -104,8 +123,19 @@ public class ProducerService implements RocketMQLocalTransactionListener {
      */
     public void sendTransactionMessage() {
         //构造消息
-        Message<String> msg = MessageBuilder.withPayload("rocketmq事务消息").build();
-        rocketMQTemplate.sendMessageInTransaction("lsx-rocketmq-orderly", msg, null);
+        for (int i = 0; i < COUNT; i++) {
+            String uuid = UUID.randomUUID().toString();
+            RocketmqUserInfo rocketmqUserInfo = new RocketmqUserInfo();
+            rocketmqUserInfo.setId(i);
+            rocketmqUserInfo.setAddress(uuid);
+            rocketmqUserInfo.setSex(i % 2);
+            rocketmqUserInfo.setUserName("lsx - " + i);
+            rocketmqUserInfo.setNikeName("liushaoxiong - " + i);
+            rocketmqUserInfo.setPhone("https://" + uuid);
+            rocketmqUserInfo.setCity("湖南-sendTransactionMessage");
+            Message<RocketmqUserInfo> rocketmqUserInfoMessage = MessageBuilder.withPayload(rocketmqUserInfo).build();
+            rocketMQTemplate.sendMessageInTransaction("lsx-rocketmq-orderly", rocketmqUserInfoMessage, null);
+        }
     }
 
     @Override
@@ -157,7 +187,6 @@ public class ProducerService implements RocketMQLocalTransactionListener {
         headers3.put("type", "user");
         headers3.put("a", 7);
         rocketMQTemplate.convertAndSend("lsx-rocketmq-orderly", msg3, headers3);
-
     }
 
 }

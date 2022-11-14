@@ -10,6 +10,7 @@
     <modules>
         <module>rocketmq-provider</module>
         <module>rocketmq-comsumer</module>
+        <module>RocketMq-common</module>
     </modules>
 
     <packaging>pom</packaging>

@@ -8,3 +8,15 @@ rocketmq:
 
 server:
   port: 8939
+
+spring:
+  datasource:
+    dynamic:
+      primary: mysql
+      datasource:
+        # mysql 本地数据库
+        mysql:
+          url: jdbc:mysql://192.168.10.87:3306/local?useUnicode=true&rewriteBatchedStatements=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+          username: root
+          password: 11098319
+          driverClassName: com.mysql.cj.jdbc.Driver
