@@ -25,7 +25,7 @@ import java.util.UUID;
 @RocketMQTransactionListener
 public class ProducerService implements RocketMQLocalTransactionListener {
 
-    public static final int COUNT = 100000;
+    public static final int COUNT = 1000;
 
     private final RocketMQTemplate rocketMQTemplate;
 
@@ -48,14 +48,8 @@ public class ProducerService implements RocketMQLocalTransactionListener {
     public void sendSyncMessage() {
         for (int i = 0; i < COUNT; i++) {
             String uuid = UUID.randomUUID().toString();
-            RocketmqUserInfo rocketmqUserInfo = new RocketmqUserInfo();
-            rocketmqUserInfo.setId(i);
-            rocketmqUserInfo.setAddress(uuid);
-            rocketmqUserInfo.setSex(i % 2);
-            rocketmqUserInfo.setUserName("lsx - " + i);
-            rocketmqUserInfo.setNikeName("liushaoxiong - " + i);
-            rocketmqUserInfo.setPhone("https://" + uuid);
-            rocketmqUserInfo.setCity("湖南-sendSyncMessage");
+            RocketmqUserInfo rocketmqUserInfo = RocketmqUserInfo.builder().address(uuid).sex(i % 2).userName("lsx - " + i)
+                    .nikeName("liushaoxiong - " + i).phone("13272441943").city("湖南-sendAsyncMessage").build();
             SendResult sendResult = rocketMQTemplate.syncSend("lsx-rocketmq", rocketmqUserInfo);
         }
     }
@@ -66,14 +60,8 @@ public class ProducerService implements RocketMQLocalTransactionListener {
     public void sendAsyncMessage() {
         for (int i = 0; i < COUNT; i++) {
             String uuid = UUID.randomUUID().toString();
-            RocketmqUserInfo rocketmqUserInfo = new RocketmqUserInfo();
-            rocketmqUserInfo.setId(i);
-            rocketmqUserInfo.setAddress(uuid);
-            rocketmqUserInfo.setSex(i % 2);
-            rocketmqUserInfo.setUserName("lsx - " + i);
-            rocketmqUserInfo.setNikeName("liushaoxiong - " + i);
-            rocketmqUserInfo.setPhone("https://" + uuid);
-            rocketmqUserInfo.setCity("湖南-sendAsyncMessage");
+            RocketmqUserInfo rocketmqUserInfo = RocketmqUserInfo.builder().address(uuid).sex(i % 2).userName("lsx - " + i)
+                    .nikeName("liushaoxiong - " + i).phone("13272441943").city("湖南-sendAsyncMessage").build();
             rocketMQTemplate.asyncSend("lsx-rocketmq", rocketmqUserInfo, new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
@@ -86,6 +74,23 @@ public class ProducerService implements RocketMQLocalTransactionListener {
                 }
             });
         }
+    }
+
+    /**
+     * 发送异步消息 使用比较频繁
+     */
+    public void sendAsyncMessage(RocketmqUserInfo rocketmqUserInfo) {
+        rocketMQTemplate.asyncSend("lsx-rocketmq", rocketmqUserInfo, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                System.out.println(sendResult);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                System.out.println("失败处理");
+            }
+        });
     }
 
     /**
@@ -126,7 +131,6 @@ public class ProducerService implements RocketMQLocalTransactionListener {
         for (int i = 0; i < COUNT; i++) {
             String uuid = UUID.randomUUID().toString();
             RocketmqUserInfo rocketmqUserInfo = new RocketmqUserInfo();
-            rocketmqUserInfo.setId(i);
             rocketmqUserInfo.setAddress(uuid);
             rocketmqUserInfo.setSex(i % 2);
             rocketmqUserInfo.setUserName("lsx - " + i);

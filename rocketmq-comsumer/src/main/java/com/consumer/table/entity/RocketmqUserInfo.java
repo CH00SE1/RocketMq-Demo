@@ -1,10 +1,12 @@
 package com.consumer.table.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -14,6 +16,7 @@ import java.io.Serializable;
  * @author CHOOSE1
  * @since 2022-11-14
  */
+@Data
 @TableName("t_rocketmq_user_info")
 @ApiModel(value = "RocketmqUserInfo对象", description = "")
 public class RocketmqUserInfo implements Serializable {
@@ -21,6 +24,7 @@ public class RocketmqUserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("主键")
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty("名字")
@@ -41,72 +45,11 @@ public class RocketmqUserInfo implements Serializable {
     @ApiModelProperty("性别")
     private Integer sex;
 
-    public Integer getId() {
-        return id;
-    }
+    @ApiModelProperty("创建时间")
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @ApiModelProperty("优惠卷类别[0:200,1:100,2:50,3:10]")
+    private Integer type;
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getNikeName() {
-        return nikeName;
-    }
-
-    public void setNikeName(String nikeName) {
-        this.nikeName = nikeName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    @Override
-    public String toString() {
-        return "RocketmqUserInfo{" +
-                "id = " + id +
-                ", userName = " + userName +
-                ", nikeName = " + nikeName +
-                ", address = " + address +
-                ", phone = " + phone +
-                ", city = " + city +
-                ", sex = " + sex +
-                "}";
-    }
 }
